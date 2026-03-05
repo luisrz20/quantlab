@@ -1,0 +1,5 @@
+# QuantLab — Code Owners (Capa 0 §3)
+/backend/         @agenciafactoriai
+/frontend/        @agenciafactoriai
+/.github/         @agenciafactoriai
+docker-compose*   @agenciafactoriai
