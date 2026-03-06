@@ -1,93 +1,172 @@
-# QuantLab
+# QuantLab – Trading Strategy Simulator
 
-Plataforma local de simulación de trading automático (paper trading) con datos reales (yfinance).  
-Estrategias: SMA Crossover, RSI Mean Reversion. Comparador A vs B. Sin autenticación.
+QuantLab es una aplicación web que permite **probar y comparar estrategias de trading utilizando datos históricos reales del mercado**.
 
-**Clasificación: Tier 3** (sin auth, sin datos personales) — Capa 0 Agencia FactorIA.
+El objetivo es **evaluar estrategias de inversión sin riesgo**, analizando métricas como rentabilidad, drawdown o ratio de Sharpe antes de aplicarlas en trading real.
 
 ---
 
-## Quick Start
+## Qué hace el proyecto
 
-### 1. Base de datos
+La aplicación permite:
+
+- Simular estrategias de trading sobre acciones reales
+- Analizar resultados con métricas financieras
+- Visualizar la evolución del capital (equity curve)
+- Comparar diferentes estrategias
+
+Todo se basa en **datos históricos del mercado**.
+
+---
+
+## Screenshots
+
+- Carpeta de Docs
+### Simulación
+
+Aquí el usuario configura la simulación:
+
+- activo (ticker)
+- estrategia
+- parámetros
+- capital inicial
+
+![Simulation](docs/screenshots/simulate.png)
+
+---
+
+### Resultados
+
+Después de ejecutar la simulación se muestran métricas clave:
+
+- Profit
+- Win Rate
+- Max Drawdown
+- Sharpe Ratio
+- Número de trades
+- Curva de capital
+
+![Results](docs/screenshots/results.png)
+
+---
+
+## Tecnologías utilizadas
+
+### Backend
+
+- Python
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+- yfinance
+
+### Frontend
+
+- React
+- Vite
+- Typescript
+
+### Infraestructura
+
+- Docker
+- Docker Compose
+
+---
+
+## Arquitectura del proyecto
+
+```
+backend/
+   API REST
+   motor de simulación
+   conexión a base de datos
+
+frontend/
+   interfaz de usuario
+   dashboard de simulaciones
+
+database/
+   PostgreSQL para guardar simulaciones y resultados
+```
+
+---
+
+## Cómo ejecutar el proyecto
+
+### 1. Clonar el repositorio
 
 ```bash
-cp .env.example .env
-docker compose up -d db
+git clone https://github.com/tuusuario/quantlab.git
+cd quantlab
 ```
+
+---
 
 ### 2. Backend
 
+Abrir terminal en `backend`
+
 ```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements-dev.txt
-
-# Copiar .env del backend
-cp .env.example .env
-
-# Migraciones (crea tablas automáticamente al arrancar, alembic es opcional)
-# alembic upgrade head
-
-uvicorn quantlab.main:app --reload --port 8000
-# → Docs en http://localhost:8000/docs
+source .venv/bin/activate
+PYTHONPATH="$PWD/src" uvicorn quantlab.main:app --reload --port 8000
 ```
 
-### 3. Frontend
+API disponible en:
 
-```bash
-cd frontend
-npm install
-npm run dev
-# → http://localhost:5173
 ```
-
-### Build de producción (verifica TypeScript)
-
-```bash
-cd frontend
-npm run build
+http://127.0.0.1:8000/docs
 ```
 
 ---
 
-## Estructura
+### 3. Frontend
 
-```
-quantlab/
-├── backend/          FastAPI + SQLAlchemy + Alembic
-│   └── src/quantlab/
-│       ├── api/      rutas + schemas Pydantic
-│       ├── domain/   estrategias, broker, métricas, entidades
-│       ├── infrastructure/  DB, repos, yfinance
-│       └── services/ orquestación
-├── frontend/         React + Vite + MUI + Recharts
-│   └── src/
-│       ├── api/      client.ts (axios)
-│       ├── components/common/
-│       └── pages/
-├── docker-compose.yml
-└── .env.example
-```
-
-## Endpoints
-
-| Método | Path | Descripción |
-|--------|------|-------------|
-| POST | `/simulations/run` | Ejecuta simulación |
-| GET  | `/simulations` | Lista simulaciones |
-| GET  | `/simulations/{id}` | Detalle: métricas + equity + trades |
-| GET  | `/simulations/compare/pair?a=1&b=2` | Comparador |
-| GET  | `/health` | Health check |
-
-## Tests
+Abrir otra terminal en `frontend`
 
 ```bash
-cd backend
-pytest
+npm install
+npm run dev
 ```
 
-## Variables de entorno
+Aplicación disponible en:
 
-Ver `.env.example`. `DATABASE_URL` es obligatoria — la app no arranca sin ella.
+```
+http://localhost:5173
+```
+
+---
+
+## Métricas analizadas
+
+Las simulaciones calculan:
+
+- Profit (%)
+- Win Rate
+- Max Drawdown
+- Sharpe Ratio
+- Número de operaciones
+
+Estas métricas permiten **evaluar la calidad de una estrategia de inversión**.
+
+---
+
+## Estado del proyecto
+
+Proyecto funcional que permite:
+
+- crear simulaciones
+- probar estrategias
+- visualizar resultados
+
+Próximas mejoras posibles:
+
+- más estrategias
+- optimización de parámetros
+- integración con brokers
+- análisis de noticias macro
+
+---
+
+## Autor
+
+Proyecto desarrollado como **simulador de estrategias de trading cuantitativo** para analizar decisiones de inversión basadas en datos.
